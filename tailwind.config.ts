@@ -47,6 +47,30 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        homework: {
+          DEFAULT: "hsl(var(--homework))",
+          foreground: "hsl(var(--homework-foreground))",
+          light: "hsl(var(--homework-light))",
+        },
+        revision: {
+          DEFAULT: "hsl(var(--revision))",
+          foreground: "hsl(var(--revision-foreground))",
+          light: "hsl(var(--revision-light))",
+        },
+        projects: {
+          DEFAULT: "hsl(var(--projects))",
+          foreground: "hsl(var(--projects-foreground))",
+          light: "hsl(var(--projects-light))",
+        },
+        other: {
+          DEFAULT: "hsl(var(--other))",
+          foreground: "hsl(var(--other-foreground))",
+          light: "hsl(var(--other-light))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
