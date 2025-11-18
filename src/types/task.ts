@@ -9,6 +9,48 @@ export interface Task {
   completed: boolean;
   createdAt: string;
   dueDate?: string;
+  tags?: Tag[];
+  totalTimeSpent?: number; // in seconds
+}
+
+export interface Tag {
+  id: string;
+  name: string;
+  color: string;
+  createdAt: string;
+}
+
+export interface TaskTag {
+  id: string;
+  taskId: string;
+  tagId: string;
+  createdAt: string;
+}
+
+export interface AIAnalysis {
+  id: string;
+  taskId: string;
+  analysisType: string;
+  inputData: any;
+  result: {
+    analysis: string;
+    estimatedHours: number;
+    tips: string[];
+    priority: 'low' | 'medium' | 'high';
+    subtasks?: string[];
+  };
+  model: string;
+  createdAt: string;
+}
+
+export interface TimeSession {
+  id: string;
+  taskId: string;
+  startTime: string;
+  endTime?: string;
+  durationSeconds?: number;
+  notes?: string;
+  createdAt: string;
 }
 
 export const categoryLabels: Record<TaskCategory, string> = {
