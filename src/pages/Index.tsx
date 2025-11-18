@@ -1,10 +1,12 @@
-import { useState, useMemo } from 'react';
-import { Task, TaskCategory, categoryLabels } from '@/types/task';
+import { useState, useMemo, useEffect } from 'react';
+import { Task, TaskCategory, categoryLabels, Tag } from '@/types/task';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { TaskCard } from '@/components/TaskCard';
+import { TaskCardEnhanced } from '@/components/TaskCardEnhanced';
 import { AddTaskDialog } from '@/components/AddTaskDialog';
 import { StatsCards } from '@/components/StatsCards';
+import { ProgressChart } from '@/components/ProgressChart';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Select,
   SelectContent,
@@ -12,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Plus, Filter, Trash2, ListTodo } from 'lucide-react';
+import { Plus, Filter, Trash2, ListTodo, BarChart3 } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,6 +27,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 const Index = () => {
   const [tasks, setTasks] = useLocalStorage<Task[]>('homework-tracker-tasks', []);
@@ -32,6 +35,64 @@ const Index = () => {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<TaskCategory | 'all'>('all');
   const [statusFilter, setStatusFilter] = useState<'all' | 'completed' | 'incomplete'>('all');
+
+  // Load tags and time sessions for tasks
+  useEffect(() => {
+    loadTaskEnhancements();
+  }, [tasks.length]);
+
+  const loadTaskEnhancements = async () => {
+    if (tasks.length === 0) return;
+
+    const taskIds = tasks.map(t => t.id);
+
+    // Load tags for all tasks
+    const { data: taskTagsData } = await supabase
+      .from('task_tags')
+      .select(`
+        task_id,
+        tags (id, name, color, created_at)
+      `)
+      .in('task_id', taskIds);
+
+    // Load time sessions for all tasks
+    const { data: timeSessionsData } = await supabase
+      .from('task_time_sessions')
+      .select('task_id, duration_seconds')
+      .in('task_id', taskIds)
+      .not('end_time', 'is', null);
+
+    // Calculate total time per task
+    const timeByTask: Record<string, number> = {};
+    timeSessionsData?.forEach(session => {
+      if (session.duration_seconds) {
+        timeByTask[session.task_id] = (timeByTask[session.task_id] || 0) + session.duration_seconds;
+      }
+    });
+
+    // Group tags by task
+    const tagsByTask: Record<string, Tag[]> = {};
+    taskTagsData?.forEach((item: any) => {
+      if (item.tags) {
+        if (!tagsByTask[item.task_id]) {
+          tagsByTask[item.task_id] = [];
+        }
+        tagsByTask[item.task_id].push({
+          id: item.tags.id,
+          name: item.tags.name,
+          color: item.tags.color,
+          createdAt: item.tags.created_at,
+        });
+      }
+    });
+
+    // Update tasks with tags and time
+    setTasks(tasks.map(task => ({
+      ...task,
+      tags: tagsByTask[task.id] || [],
+      totalTimeSpent: timeByTask[task.id] || 0,
+    })));
+  };
 
   const filteredTasks = useMemo(() => {
     return tasks.filter(task => {
@@ -109,6 +170,10 @@ const Index = () => {
   const handleDialogClose = () => {
     setDialogOpen(false);
     setEditingTask(null);
+  };
+
+  const handleTagsChange = (taskId: string, tags: Tag[]) => {
+    setTasks(tasks.map(t => t.id === taskId ? { ...t, tags } : t));
   };
 
   return (
@@ -189,37 +254,57 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Tasks Grid */}
-        {filteredTasks.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
-              <ListTodo className="h-8 w-8 text-muted-foreground" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">No tasks found</h3>
-            <p className="text-muted-foreground mb-6">
-              {tasks.length === 0 
-                ? "Get started by adding your first task!"
-                : "Try adjusting your filters or add a new task."}
-            </p>
-            <Button onClick={() => setDialogOpen(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Your First Task
-            </Button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredTasks.map(task => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                onEdit={handleEditTask}
-                onDelete={handleDeleteTask}
-                onProgressChange={handleProgressChange}
-                onToggleComplete={handleToggleComplete}
-              />
-            ))}
-          </div>
-        )}
+        {/* Tasks Grid with Tabs */}
+        <Tabs defaultValue="tasks" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="tasks" className="gap-2">
+              <ListTodo className="h-4 w-4" />
+              Tasks
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="gap-2">
+              <BarChart3 className="h-4 w-4" />
+              Analytics
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="tasks" className="space-y-6">
+            {filteredTasks.length === 0 ? (
+              <div className="text-center py-16">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
+                  <ListTodo className="h-8 w-8 text-muted-foreground" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">No tasks found</h3>
+                <p className="text-muted-foreground mb-6">
+                  {tasks.length === 0 
+                    ? "Get started by adding your first task!"
+                    : "Try adjusting your filters or add a new task."}
+                </p>
+                <Button onClick={() => setDialogOpen(true)}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Your First Task
+                </Button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredTasks.map(task => (
+                  <TaskCardEnhanced
+                    key={task.id}
+                    task={task}
+                    onEdit={handleEditTask}
+                    onDelete={handleDeleteTask}
+                    onProgressChange={handleProgressChange}
+                    onToggleComplete={handleToggleComplete}
+                    onTagsChange={handleTagsChange}
+                  />
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <ProgressChart tasks={tasks} />
+          </TabsContent>
+        </Tabs>
 
         {/* Add/Edit Dialog */}
         <AddTaskDialog
