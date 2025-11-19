@@ -1,10 +1,17 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Task, TaskCategory, categoryLabels, Tag } from '@/types/task';
+import { Task, TaskCategory, categoryLabels, Tag, Subtask } from '@/types/task';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { TaskCardEnhanced } from '@/components/TaskCardEnhanced';
 import { AddTaskDialog } from '@/components/AddTaskDialog';
 import { StatsCards } from '@/components/StatsCards';
 import { ProgressChart } from '@/components/ProgressChart';
+import { NotebookView } from '@/components/NotebookView';
+import { CalendarView } from '@/components/CalendarView';
+import { TimelineView } from '@/components/TimelineView';
+import { KanbanView } from '@/components/KanbanView';
+import { WeeklySummary } from '@/components/WeeklySummary';
+import { DataExport } from '@/components/DataExport';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -14,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Plus, Filter, Trash2, ListTodo, BarChart3 } from 'lucide-react';
+import { Plus, Filter, Trash2, ListTodo, BarChart3, BookOpen, Calendar, Timeline, LayoutGrid } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -46,21 +53,23 @@ const Index = () => {
 
     const taskIds = tasks.map(t => t.id);
 
-    // Load tags for all tasks
+    // Load tags, time sessions, and subtasks
     const { data: taskTagsData } = await supabase
       .from('task_tags')
-      .select(`
-        task_id,
-        tags (id, name, color, created_at)
-      `)
+      .select(`task_id, tags (id, name, color, created_at)`)
       .in('task_id', taskIds);
 
-    // Load time sessions for all tasks
     const { data: timeSessionsData } = await supabase
       .from('task_time_sessions')
       .select('task_id, duration_seconds')
       .in('task_id', taskIds)
       .not('end_time', 'is', null);
+
+    const { data: subtasksData } = await supabase
+      .from('subtasks')
+      .select('*')
+      .in('task_id', taskIds)
+      .order('order_index');
 
     // Calculate total time per task
     const timeByTask: Record<string, number> = {};
@@ -86,11 +95,25 @@ const Index = () => {
       }
     });
 
-    // Update tasks with tags and time
+    // Group subtasks by task
+    const subtasksByTask: Record<string, Subtask[]> = {};
+    subtasksData?.forEach((st: any) => {
+      if (!subtasksByTask[st.task_id]) subtasksByTask[st.task_id] = [];
+      subtasksByTask[st.task_id].push({
+        id: st.id,
+        taskId: st.task_id,
+        title: st.title,
+        completed: st.completed,
+        orderIndex: st.order_index,
+        createdAt: st.created_at,
+      });
+    });
+
     setTasks(tasks.map(task => ({
       ...task,
       tags: tagsByTask[task.id] || [],
       totalTimeSpent: timeByTask[task.id] || 0,
+      subtasks: subtasksByTask[task.id] || [],
     })));
   };
 
@@ -176,15 +199,22 @@ const Index = () => {
     setTasks(tasks.map(t => t.id === taskId ? { ...t, tags } : t));
   };
 
+  const handleSubtasksChange = (taskId: string, subtasks: Subtask[]) => {
+    setTasks(tasks.map(t => t.id === taskId ? { ...t, subtasks } : t));
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}
-        <header className="mb-8">
-          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Homework & Revision Tracker
-          </h1>
-          <p className="text-muted-foreground">Track your progress and stay organized</p>
+        <header className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Homework & Revision Tracker
+            </h1>
+            <p className="text-muted-foreground">Track your progress and stay organized</p>
+          </div>
+          <ThemeToggle />
         </header>
 
         {/* Stats */}
@@ -254,17 +284,15 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Tasks Grid with Tabs */}
+        {/* Main Tabs */}
         <Tabs defaultValue="tasks" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="tasks" className="gap-2">
-              <ListTodo className="h-4 w-4" />
-              Tasks
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="gap-2">
-              <BarChart3 className="h-4 w-4" />
-              Analytics
-            </TabsTrigger>
+          <TabsList className="grid w-full grid-cols-6">
+            <TabsTrigger value="tasks"><ListTodo className="h-4 w-4" /></TabsTrigger>
+            <TabsTrigger value="kanban"><LayoutGrid className="h-4 w-4" /></TabsTrigger>
+            <TabsTrigger value="calendar"><Calendar className="h-4 w-4" /></TabsTrigger>
+            <TabsTrigger value="timeline"><Timeline className="h-4 w-4" /></TabsTrigger>
+            <TabsTrigger value="notebook"><BookOpen className="h-4 w-4" /></TabsTrigger>
+            <TabsTrigger value="analytics"><BarChart3 className="h-4 w-4" /></TabsTrigger>
           </TabsList>
 
           <TabsContent value="tasks" className="space-y-6">
@@ -295,14 +323,33 @@ const Index = () => {
                     onProgressChange={handleProgressChange}
                     onToggleComplete={handleToggleComplete}
                     onTagsChange={handleTagsChange}
+                    onSubtasksChange={handleSubtasksChange}
                   />
                 ))}
               </div>
             )}
           </TabsContent>
 
-          <TabsContent value="analytics">
+          <TabsContent value="kanban">
+            <KanbanView tasks={tasks} onTaskClick={handleEditTask} onProgressChange={handleProgressChange} />
+          </TabsContent>
+
+          <TabsContent value="calendar">
+            <CalendarView tasks={tasks} onTaskClick={handleEditTask} />
+          </TabsContent>
+
+          <TabsContent value="timeline">
+            <TimelineView tasks={tasks} onTaskClick={handleEditTask} />
+          </TabsContent>
+
+          <TabsContent value="notebook">
+            <NotebookView />
+          </TabsContent>
+
+          <TabsContent value="analytics" className="space-y-6">
+            <WeeklySummary tasks={tasks} />
             <ProgressChart tasks={tasks} />
+            <DataExport tasks={tasks} onImport={(importedTasks) => setTasks(importedTasks)} />
           </TabsContent>
         </Tabs>
 

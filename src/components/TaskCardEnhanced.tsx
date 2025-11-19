@@ -1,4 +1,4 @@
-import { Task, categoryLabels, categoryColors, Tag } from '@/types/task';
+import { Task, categoryLabels, categoryColors, Tag, Subtask } from '@/types/task';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
@@ -9,12 +9,9 @@ import { cn } from '@/lib/utils';
 import { TagManager } from './TagManager';
 import { TaskTimer } from './TaskTimer';
 import { AIAnalysisPanel } from './AIAnalysisPanel';
+import { SubtaskManager } from './SubtaskManager';
+import { PriorityBadge } from './PrioritySelector';
 import { useState } from 'react';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
 
 interface TaskCardEnhancedProps {
   task: Task;
@@ -23,6 +20,7 @@ interface TaskCardEnhancedProps {
   onProgressChange: (id: string, progress: number) => void;
   onToggleComplete: (id: string) => void;
   onTagsChange: (taskId: string, tags: Tag[]) => void;
+  onSubtasksChange: (taskId: string, subtasks: Subtask[]) => void;
 }
 
 export function TaskCardEnhanced({ 
@@ -31,7 +29,8 @@ export function TaskCardEnhanced({
   onDelete, 
   onProgressChange, 
   onToggleComplete,
-  onTagsChange
+  onTagsChange,
+  onSubtasksChange
 }: TaskCardEnhancedProps) {
   const categoryColor = categoryColors[task.category];
   const isCompleted = task.completed || task.progress === 100;
@@ -103,16 +102,26 @@ export function TaskCardEnhanced({
           </div>
         </div>
 
-        {/* Category Badge */}
-        <Badge className={categoryColor}>
-          {categoryLabels[task.category]}
-        </Badge>
+        {/* Category & Priority */}
+        <div className="flex gap-2">
+          <Badge className={categoryColor}>
+            {categoryLabels[task.category]}
+          </Badge>
+          <PriorityBadge priority={task.priority} />
+        </div>
 
         {/* Tags */}
         <TagManager
           taskId={task.id}
           selectedTags={task.tags || []}
           onTagsChange={(tags) => onTagsChange(task.id, tags)}
+        />
+
+        {/* Subtasks */}
+        <SubtaskManager
+          taskId={task.id}
+          subtasks={task.subtasks || []}
+          onSubtasksChange={(subtasks) => onSubtasksChange(task.id, subtasks)}
         />
 
         {/* Progress Section */}
@@ -138,7 +147,6 @@ export function TaskCardEnhanced({
               )}
             />
             
-            {/* Quick Progress Buttons */}
             {!task.completed && (
               <div className="flex gap-2">
                 {[25, 50, 75, 100].map((value) => (
@@ -174,7 +182,6 @@ export function TaskCardEnhanced({
           )}
         </div>
 
-        {/* Expandable Timer Section */}
         {showTimer && (
           <div className="pt-2 border-t animate-fade-in">
             <TaskTimer 
@@ -185,7 +192,6 @@ export function TaskCardEnhanced({
           </div>
         )}
 
-        {/* Expandable AI Analysis Section */}
         {showAIAnalysis && (
           <div className="pt-2 border-t animate-fade-in">
             <AIAnalysisPanel task={task} />

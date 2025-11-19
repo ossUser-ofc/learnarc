@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Task, TaskCategory, categoryLabels } from '@/types/task';
+import { Task, TaskCategory, TaskPriority, categoryLabels } from '@/types/task';
+import { PrioritySelector } from './PrioritySelector';
 import {
   Dialog,
   DialogContent,
@@ -31,19 +32,25 @@ export function AddTaskDialog({ open, onOpenChange, onSave, editTask }: AddTaskD
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState<TaskCategory>('homework');
+  const [priority, setPriority] = useState<TaskPriority>('medium');
   const [dueDate, setDueDate] = useState('');
+  const [estimatedTime, setEstimatedTime] = useState('');
 
   useEffect(() => {
     if (editTask) {
       setTitle(editTask.title);
       setDescription(editTask.description || '');
       setCategory(editTask.category);
+      setPriority(editTask.priority);
       setDueDate(editTask.dueDate || '');
+      setEstimatedTime(editTask.estimatedTime?.toString() || '');
     } else {
       setTitle('');
       setDescription('');
       setCategory('homework');
+      setPriority('medium');
       setDueDate('');
+      setEstimatedTime('');
     }
   }, [editTask, open]);
 
@@ -55,9 +62,18 @@ export function AddTaskDialog({ open, onOpenChange, onSave, editTask }: AddTaskD
       title: title.trim(),
       description: description.trim() || undefined,
       category,
+      priority,
       progress: editTask?.progress || 0,
       completed: editTask?.completed || false,
       dueDate: dueDate || undefined,
+      estimatedTime: estimatedTime ? parseFloat(estimatedTime) : undefined,
+      tags: editTask?.tags,
+      totalTimeSpent: editTask?.totalTimeSpent,
+      subtasks: editTask?.subtasks,
+      attachments: editTask?.attachments,
+      dependencies: editTask?.dependencies,
+      recurringType: editTask?.recurringType || 'none',
+      notes: editTask?.notes,
     });
 
     onOpenChange(false);
@@ -111,6 +127,24 @@ export function AddTaskDialog({ open, onOpenChange, onSave, editTask }: AddTaskD
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="priority">Priority</Label>
+              <PrioritySelector value={priority} onChange={setPriority} />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="estimatedTime">Estimated Time (hours)</Label>
+              <Input
+                id="estimatedTime"
+                type="number"
+                step="0.5"
+                min="0"
+                value={estimatedTime}
+                onChange={(e) => setEstimatedTime(e.target.value)}
+                placeholder="e.g., 2.5"
+              />
             </div>
 
             <div className="space-y-2">
