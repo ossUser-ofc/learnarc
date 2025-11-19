@@ -44,6 +44,66 @@ export type Database = {
         }
         Relationships: []
       }
+      notes: {
+        Row: {
+          content: string
+          created_at: string
+          folder: string | null
+          id: string
+          tags: string[] | null
+          task_id: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          folder?: string | null
+          id?: string
+          tags?: string[] | null
+          task_id?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          folder?: string | null
+          id?: string
+          tags?: string[] | null
+          task_id?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      subtasks: {
+        Row: {
+          completed: boolean
+          created_at: string
+          id: string
+          order_index: number
+          task_id: string
+          title: string
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          id?: string
+          order_index?: number
+          task_id: string
+          title: string
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          id?: string
+          order_index?: number
+          task_id?: string
+          title?: string
+        }
+        Relationships: []
+      }
       tags: {
         Row: {
           color: string
@@ -62,6 +122,27 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+        }
+        Relationships: []
+      }
+      task_dependencies: {
+        Row: {
+          created_at: string
+          depends_on_task_id: string
+          id: string
+          task_id: string
+        }
+        Insert: {
+          created_at?: string
+          depends_on_task_id: string
+          id?: string
+          task_id: string
+        }
+        Update: {
+          created_at?: string
+          depends_on_task_id?: string
+          id?: string
+          task_id?: string
         }
         Relationships: []
       }
@@ -121,6 +202,33 @@ export type Database = {
           notes?: string | null
           start_time?: string
           task_id?: string
+        }
+        Relationships: []
+      }
+      weekly_summaries: {
+        Row: {
+          created_at: string
+          id: string
+          insights: Json
+          summary: string
+          week_end: string
+          week_start: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          insights: Json
+          summary: string
+          week_end: string
+          week_start: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          insights?: Json
+          summary?: string
+          week_end?: string
+          week_start?: string
         }
         Relationships: []
       }
