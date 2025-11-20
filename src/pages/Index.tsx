@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Task, TaskCategory, categoryLabels, Tag, Subtask } from '@/types/task';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { TaskCardEnhanced } from '@/components/TaskCardEnhanced';
@@ -37,11 +38,32 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
 const Index = () => {
+  const navigate = useNavigate();
   const [tasks, setTasks] = useLocalStorage<Task[]>('homework-tracker-tasks', []);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<TaskCategory | 'all'>('all');
   const [statusFilter, setStatusFilter] = useState<'all' | 'completed' | 'incomplete'>('all');
+
+  // Check authentication
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        navigate('/auth');
+      }
+    };
+    checkAuth();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) {
+        navigate('/auth');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
 
   // Load tags and time sessions for tasks
   useEffect(() => {
@@ -157,25 +179,56 @@ const Index = () => {
     toast.success('Task deleted successfully!');
   };
 
-  const handleProgressChange = (id: string, progress: number) => {
-    setTasks(tasks.map(t => {
+  const handleProgressChange = async (id: string, progress: number) => {
+    const updatedTasks = tasks.map(t => {
       if (t.id === id) {
         const completed = progress === 100;
         if (completed && !t.completed) {
+          // Record completion history
+          const task = tasks.find(task => task.id === id);
+          if (task) {
+            supabase.from('task_completion_history').insert({
+              task_id: id,
+              task_title: task.title,
+              estimated_time: task.estimatedTime || null,
+              actual_time: task.totalTimeSpent || 0,
+            }).then(({ error }) => {
+              if (error) console.error('Error recording completion:', error);
+            });
+          }
           toast.success('Task completed! 🎉');
         }
         return { ...t, progress, completed };
       }
       return t;
-    }));
+    });
+    setTasks(updatedTasks);
   };
 
-  const handleToggleComplete = (id: string) => {
+  const handleToggleComplete = async (id: string) => {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+
+    const newCompleted = !task.completed;
+    
+    // If completing the task, record completion history
+    if (newCompleted && !task.completed) {
+      try {
+        await supabase.from('task_completion_history').insert({
+          task_id: id,
+          task_title: task.title,
+          estimated_time: task.estimatedTime || null,
+          actual_time: task.totalTimeSpent || 0,
+        });
+      } catch (error) {
+        console.error('Error recording completion history:', error);
+      }
+      toast.success('Task marked as complete! 🎉');
+    }
+
     setTasks(tasks.map(t => {
       if (t.id === id) {
-        const newCompleted = !t.completed;
         if (newCompleted) {
-          toast.success('Task marked as complete! 🎉');
           return { ...t, completed: true, progress: 100 };
         } else {
           return { ...t, completed: false };
@@ -207,14 +260,26 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}
-        <header className="mb-8 flex items-center justify-between">
+        <header className="mb-8 flex items-center justify-between flex-wrap gap-4">
           <div>
             <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               Homework & Revision Tracker
             </h1>
             <p className="text-muted-foreground">Track your progress and stay organized</p>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={async () => {
+                await supabase.auth.signOut();
+                navigate('/auth');
+              }}
+            >
+              Sign Out
+            </Button>
+          </div>
         </header>
 
         {/* Stats */}

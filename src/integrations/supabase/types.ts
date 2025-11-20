@@ -125,6 +125,36 @@ export type Database = {
         }
         Relationships: []
       }
+      task_completion_history: {
+        Row: {
+          actual_time: number
+          completed_at: string
+          created_at: string
+          estimated_time: number | null
+          id: string
+          task_id: string
+          task_title: string
+        }
+        Insert: {
+          actual_time: number
+          completed_at?: string
+          created_at?: string
+          estimated_time?: number | null
+          id?: string
+          task_id: string
+          task_title: string
+        }
+        Update: {
+          actual_time?: number
+          completed_at?: string
+          created_at?: string
+          estimated_time?: number | null
+          id?: string
+          task_id?: string
+          task_title?: string
+        }
+        Relationships: []
+      }
       task_dependencies: {
         Row: {
           created_at: string

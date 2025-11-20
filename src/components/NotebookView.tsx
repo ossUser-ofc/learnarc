@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { NoteEditor } from './NoteEditor';
+import { MarkdownRenderer } from './MarkdownRenderer';
 import { 
   Plus, 
   Search, 
@@ -221,11 +222,7 @@ export function NotebookView() {
                 </Button>
               </div>
             </div>
-            <div className="prose prose-sm max-w-none dark:prose-invert">
-              <pre className="whitespace-pre-wrap font-sans text-sm">
-                {selectedNote.content}
-              </pre>
-            </div>
+            <MarkdownRenderer content={selectedNote.content} />
           </div>
         </Card>
       ) : (

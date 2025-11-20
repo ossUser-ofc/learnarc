@@ -37,8 +37,8 @@ serve(async (req) => {
     });
     const topCategory = Object.entries(categoryCount).sort((a, b) => b[1] - a[1])[0]?.[0] || 'homework';
 
-    // Generate AI summary
-    const prompt = `You are a study productivity assistant. Analyze this week's study data and provide a comprehensive summary.
+    // Generate AI summary with markdown support
+    const prompt = `You are a study productivity assistant. Analyze this week's study data and provide a comprehensive summary using **markdown formatting**.
 
 Week: ${new Date(weekStart).toLocaleDateString()} to ${new Date(weekEnd).toLocaleDateString()}
 
@@ -53,11 +53,12 @@ Tasks Data:
 Task details:
 ${tasks.slice(0, 10).map((t: any) => `- ${t.title} (${t.category}, ${t.priority} priority, ${t.progress}% complete)`).join('\n')}
 
-Provide:
-1. A 2-3 sentence overview of the week's productivity
-2. 3-5 specific, actionable recommendations for next week
+Provide a response using markdown formatting:
+1. **## Week Overview** - A 2-3 sentence overview using bold text and headers
+2. **## Key Achievements** - Bullet list of accomplishments
+3. **## Recommendations** - 3-5 specific, numbered recommendations for next week
 
-Be encouraging and constructive.`;
+Use markdown headers (##), **bold text**, bullet points (-), and proper formatting. Be encouraging and constructive.`;
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
@@ -68,7 +69,7 @@ Be encouraging and constructive.`;
       body: JSON.stringify({
         model: 'google/gemini-2.5-flash',
         messages: [
-          { role: 'system', content: 'You are a helpful study productivity assistant.' },
+          { role: 'system', content: 'You are a helpful study productivity assistant that uses markdown formatting.' },
           { role: 'user', content: prompt }
         ],
       }),

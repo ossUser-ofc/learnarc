@@ -12,9 +12,9 @@ serve(async (req) => {
   }
 
   try {
-    const { taskId, title, description, category, progress } = await req.json();
+    const { taskId, title, description, category, progress, totalTimeSpent } = await req.json();
 
-    console.log('Analyzing task:', { taskId, title, category, progress });
+    console.log('Analyzing task:', { taskId, title, category, progress, totalTimeSpent });
 
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
@@ -26,23 +26,43 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
+    // Fetch completion history for this task title to provide statistical insights
+    const { data: historyData } = await supabase
+      .from('task_completion_history')
+      .select('*')
+      .eq('task_title', title)
+      .order('completed_at', { ascending: false })
+      .limit(10);
+
+    let historyContext = '';
+    if (historyData && historyData.length > 0) {
+      const avgTime = historyData.reduce((sum, h) => sum + h.actual_time, 0) / historyData.length;
+      const lastTime = historyData[0].actual_time;
+      historyContext = `\n\nHistorical data for this task:
+- Average completion time: ${Math.round(avgTime / 60)} minutes
+- Last completion time: ${Math.round(lastTime / 60)} minutes
+- Times completed: ${historyData.length}
+${totalTimeSpent ? `- Current time spent: ${Math.round(totalTimeSpent / 60)} minutes` : ''}`;
+    }
+
     // Prepare the analysis prompt
-    const systemPrompt = `You are an AI study assistant that helps students analyze their homework and revision tasks. Provide actionable insights, study tips, time estimates, and suggestions for improvement.`;
+    const systemPrompt = `You are an AI study assistant that helps students analyze their homework and revision tasks. Provide actionable insights, study tips, time estimates, and suggestions for improvement. Use markdown formatting for better readability. When historical data is available, provide specific insights about performance trends.`;
     
     const userPrompt = `Analyze this study task:
 Title: ${title}
 Description: ${description || 'No description provided'}
 Category: ${category}
-Current Progress: ${progress}%
+Current Progress: ${progress}%${historyContext}
 
 Please provide:
-1. A brief analysis of the task complexity and scope
+1. A detailed analysis of the task complexity and scope (use markdown formatting with headers, bold, lists)
 2. Estimated time to complete (in hours)
-3. 3-5 specific study tips or strategies for this task
+3. 3-5 specific study tips or strategies for this task (use markdown lists)
 4. Priority level recommendation (low, medium, high)
 5. Suggested breakdown into smaller subtasks if applicable
+6. If historical data is available, compare current performance to past performance and provide specific insights (e.g., "This task typically takes 6 minutes but you completed it in 4 minutes - that's 33% faster!")
 
-Format your response as JSON with these fields: analysis, estimatedHours, tips (array), priority, subtasks (array).`;
+Format your response with markdown for the analysis field. Use JSON with these fields: analysis (markdown string), estimatedHours, tips (array), priority, subtasks (array).`;
 
     // Call Lovable AI
     const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
