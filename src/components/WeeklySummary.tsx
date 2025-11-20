@@ -6,6 +6,7 @@ import { Sparkles, Loader2, TrendingUp, Target, Clock, Calendar } from 'lucide-r
 import { WeeklySummary as WeeklySummaryType, Task } from '@/types/task';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { MarkdownRenderer } from './MarkdownRenderer';
 
 interface WeeklySummaryProps {
   tasks: Task[];
@@ -129,9 +130,7 @@ export function WeeklySummary({ tasks }: WeeklySummaryProps) {
             {/* Summary Text */}
             <div className="space-y-2">
               <h4 className="font-medium">Overview</h4>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {summary.summary}
-              </p>
+              <MarkdownRenderer content={summary.summary} className="text-sm" />
             </div>
 
             {/* Insights Grid */}

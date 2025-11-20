@@ -7,6 +7,7 @@ import { Task, AIAnalysis } from '@/types/task';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { MarkdownRenderer } from './MarkdownRenderer';
 
 interface AIAnalysisPanelProps {
   task: Task;
@@ -107,9 +108,7 @@ export function AIAnalysisPanel({ task }: AIAnalysisPanelProps) {
                 <Lightbulb className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm font-medium">Analysis</span>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {analysis.analysis}
-              </p>
+              <MarkdownRenderer content={analysis.analysis} />
             </div>
 
             {/* Study Tips */}
