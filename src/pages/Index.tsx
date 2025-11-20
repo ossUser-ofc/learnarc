@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Plus, Filter, Trash2, ListTodo, BarChart3, BookOpen, Calendar, Timeline, LayoutGrid } from 'lucide-react';
+import { Plus, Filter, Trash2, ListTodo, BarChart3, BookOpen, Calendar, Activity, LayoutGrid } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -290,7 +290,7 @@ const Index = () => {
             <TabsTrigger value="tasks"><ListTodo className="h-4 w-4" /></TabsTrigger>
             <TabsTrigger value="kanban"><LayoutGrid className="h-4 w-4" /></TabsTrigger>
             <TabsTrigger value="calendar"><Calendar className="h-4 w-4" /></TabsTrigger>
-            <TabsTrigger value="timeline"><Timeline className="h-4 w-4" /></TabsTrigger>
+            <TabsTrigger value="timeline"><Activity className="h-4 w-4" /></TabsTrigger>
             <TabsTrigger value="notebook"><BookOpen className="h-4 w-4" /></TabsTrigger>
             <TabsTrigger value="analytics"><BarChart3 className="h-4 w-4" /></TabsTrigger>
           </TabsList>
