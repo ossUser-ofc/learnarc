@@ -23,6 +23,7 @@ export type Database = {
           model: string
           result: Json
           task_id: string
+          user_id: string | null
         }
         Insert: {
           analysis_type: string
@@ -32,6 +33,7 @@ export type Database = {
           model: string
           result: Json
           task_id: string
+          user_id?: string | null
         }
         Update: {
           analysis_type?: string
@@ -41,6 +43,7 @@ export type Database = {
           model?: string
           result?: Json
           task_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -54,6 +57,7 @@ export type Database = {
           task_id: string | null
           title: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           content: string
@@ -64,6 +68,7 @@ export type Database = {
           task_id?: string | null
           title: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           content?: string
@@ -74,6 +79,7 @@ export type Database = {
           task_id?: string | null
           title?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -85,6 +91,7 @@ export type Database = {
           order_index: number
           task_id: string
           title: string
+          user_id: string | null
         }
         Insert: {
           completed?: boolean
@@ -93,6 +100,7 @@ export type Database = {
           order_index?: number
           task_id: string
           title: string
+          user_id?: string | null
         }
         Update: {
           completed?: boolean
@@ -101,6 +109,7 @@ export type Database = {
           order_index?: number
           task_id?: string
           title?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -110,18 +119,21 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          user_id: string | null
         }
         Insert: {
           color?: string
           created_at?: string
           id?: string
           name: string
+          user_id?: string | null
         }
         Update: {
           color?: string
           created_at?: string
           id?: string
           name?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -134,6 +146,7 @@ export type Database = {
           id: string
           task_id: string
           task_title: string
+          user_id: string | null
         }
         Insert: {
           actual_time: number
@@ -143,6 +156,7 @@ export type Database = {
           id?: string
           task_id: string
           task_title: string
+          user_id?: string | null
         }
         Update: {
           actual_time?: number
@@ -152,6 +166,7 @@ export type Database = {
           id?: string
           task_id?: string
           task_title?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -161,18 +176,21 @@ export type Database = {
           depends_on_task_id: string
           id: string
           task_id: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
           depends_on_task_id: string
           id?: string
           task_id: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
           depends_on_task_id?: string
           id?: string
           task_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -182,18 +200,21 @@ export type Database = {
           id: string
           tag_id: string
           task_id: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
           id?: string
           tag_id: string
           task_id: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
           id?: string
           tag_id?: string
           task_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -214,6 +235,7 @@ export type Database = {
           notes: string | null
           start_time: string
           task_id: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
@@ -223,6 +245,7 @@ export type Database = {
           notes?: string | null
           start_time?: string
           task_id: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
@@ -232,6 +255,7 @@ export type Database = {
           notes?: string | null
           start_time?: string
           task_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -241,6 +265,7 @@ export type Database = {
           id: string
           insights: Json
           summary: string
+          user_id: string | null
           week_end: string
           week_start: string
         }
@@ -249,6 +274,7 @@ export type Database = {
           id?: string
           insights: Json
           summary: string
+          user_id?: string | null
           week_end: string
           week_start: string
         }
@@ -257,6 +283,7 @@ export type Database = {
           id?: string
           insights?: Json
           summary?: string
+          user_id?: string | null
           week_end?: string
           week_start?: string
         }

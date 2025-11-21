@@ -22,10 +22,18 @@ export function SubtaskManager({ taskId, subtasks = [], onSubtasksChange }: Subt
     
     setIsAdding(true);
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error('You must be logged in to add subtasks');
+        setIsAdding(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from('subtasks')
         .insert({
           task_id: taskId,
+          user_id: user.id,
           title: newSubtaskTitle.trim(),
           order_index: subtasks.length,
           completed: false,
