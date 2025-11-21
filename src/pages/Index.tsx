@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Task, TaskCategory, categoryLabels, Tag, Subtask } from '@/types/task';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useTasks } from '@/hooks/useTasks';
 import { TaskCardEnhanced } from '@/components/TaskCardEnhanced';
 import { AddTaskDialog } from '@/components/AddTaskDialog';
 import { StatsCards } from '@/components/StatsCards';
@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Plus, Filter, Trash2, ListTodo, BarChart3, BookOpen, Calendar, Activity, LayoutGrid } from 'lucide-react';
+import { Plus, Filter, Trash2, ListTodo, BarChart3, BookOpen, Calendar, Activity, LayoutGrid, Settings as SettingsIcon } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -39,7 +39,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 const Index = () => {
   const navigate = useNavigate();
-  const [tasks, setTasks] = useLocalStorage<Task[]>('homework-tracker-tasks', []);
+  const { tasks, isLoading, addTask, updateTask, deleteTask } = useTasks();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<TaskCategory | 'all'>('all');
@@ -65,80 +65,6 @@ const Index = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  // Load tags and time sessions for tasks
-  useEffect(() => {
-    loadTaskEnhancements();
-  }, [tasks.length]);
-
-  const loadTaskEnhancements = async () => {
-    if (tasks.length === 0) return;
-
-    const taskIds = tasks.map(t => t.id);
-
-    // Load tags, time sessions, and subtasks
-    const { data: taskTagsData } = await supabase
-      .from('task_tags')
-      .select(`task_id, tags (id, name, color, created_at)`)
-      .in('task_id', taskIds);
-
-    const { data: timeSessionsData } = await supabase
-      .from('task_time_sessions')
-      .select('task_id, duration_seconds')
-      .in('task_id', taskIds)
-      .not('end_time', 'is', null);
-
-    const { data: subtasksData } = await supabase
-      .from('subtasks')
-      .select('*')
-      .in('task_id', taskIds)
-      .order('order_index');
-
-    // Calculate total time per task
-    const timeByTask: Record<string, number> = {};
-    timeSessionsData?.forEach(session => {
-      if (session.duration_seconds) {
-        timeByTask[session.task_id] = (timeByTask[session.task_id] || 0) + session.duration_seconds;
-      }
-    });
-
-    // Group tags by task
-    const tagsByTask: Record<string, Tag[]> = {};
-    taskTagsData?.forEach((item: any) => {
-      if (item.tags) {
-        if (!tagsByTask[item.task_id]) {
-          tagsByTask[item.task_id] = [];
-        }
-        tagsByTask[item.task_id].push({
-          id: item.tags.id,
-          name: item.tags.name,
-          color: item.tags.color,
-          createdAt: item.tags.created_at,
-        });
-      }
-    });
-
-    // Group subtasks by task
-    const subtasksByTask: Record<string, Subtask[]> = {};
-    subtasksData?.forEach((st: any) => {
-      if (!subtasksByTask[st.task_id]) subtasksByTask[st.task_id] = [];
-      subtasksByTask[st.task_id].push({
-        id: st.id,
-        taskId: st.task_id,
-        title: st.title,
-        completed: st.completed,
-        orderIndex: st.order_index,
-        createdAt: st.created_at,
-      });
-    });
-
-    setTasks(tasks.map(task => ({
-      ...task,
-      tags: tagsByTask[task.id] || [],
-      totalTimeSpent: timeByTask[task.id] || 0,
-      subtasks: subtasksByTask[task.id] || [],
-    })));
-  };
-
   const filteredTasks = useMemo(() => {
     return tasks.filter(task => {
       const categoryMatch = categoryFilter === 'all' || task.category === categoryFilter;
@@ -149,24 +75,16 @@ const Index = () => {
     });
   }, [tasks, categoryFilter, statusFilter]);
 
-  const handleSaveTask = (taskData: Omit<Task, 'id' | 'createdAt'>) => {
+  const handleSaveTask = async (taskData: Omit<Task, 'id' | 'createdAt'>) => {
     if (editingTask) {
-      setTasks(tasks.map(t => 
-        t.id === editingTask.id 
-          ? { ...taskData, id: editingTask.id, createdAt: editingTask.createdAt }
-          : t
-      ));
+      await updateTask(editingTask.id, taskData);
       toast.success('Task updated successfully!');
       setEditingTask(null);
     } else {
-      const newTask: Task = {
-        ...taskData,
-        id: crypto.randomUUID(),
-        createdAt: new Date().toISOString(),
-      };
-      setTasks([...tasks, newTask]);
+      await addTask(taskData);
       toast.success('Task added successfully!');
     }
+    setDialogOpen(false);
   };
 
   const handleEditTask = (task: Task) => {
@@ -174,35 +92,34 @@ const Index = () => {
     setDialogOpen(true);
   };
 
-  const handleDeleteTask = (id: string) => {
-    setTasks(tasks.filter(t => t.id !== id));
-    toast.success('Task deleted successfully!');
+  const handleDeleteTask = async (id: string) => {
+    await deleteTask(id);
   };
 
   const handleProgressChange = async (id: string, progress: number) => {
-    const updatedTasks = tasks.map(t => {
-      if (t.id === id) {
-        const completed = progress === 100;
-        if (completed && !t.completed) {
-          // Record completion history
-          const task = tasks.find(task => task.id === id);
-          if (task) {
-            supabase.from('task_completion_history').insert({
-              task_id: id,
-              task_title: task.title,
-              estimated_time: task.estimatedTime || null,
-              actual_time: task.totalTimeSpent || 0,
-            }).then(({ error }) => {
-              if (error) console.error('Error recording completion:', error);
-            });
-          }
-          toast.success('Task completed! 🎉');
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+
+    const completed = progress === 100;
+    if (completed && !task.completed) {
+      // Record completion history
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await supabase.from('task_completion_history').insert({
+            task_id: id,
+            task_title: task.title,
+            estimated_time: task.estimatedTime || null,
+            actual_time: task.totalTimeSpent || 0,
+            user_id: user.id,
+          });
         }
-        return { ...t, progress, completed };
+      } catch (error) {
+        console.error('Error recording completion:', error);
       }
-      return t;
-    });
-    setTasks(updatedTasks);
+      toast.success('Task completed! 🎉');
+    }
+    await updateTask(id, { progress, completed });
   };
 
   const handleToggleComplete = async (id: string) => {
@@ -214,32 +131,32 @@ const Index = () => {
     // If completing the task, record completion history
     if (newCompleted && !task.completed) {
       try {
-        await supabase.from('task_completion_history').insert({
-          task_id: id,
-          task_title: task.title,
-          estimated_time: task.estimatedTime || null,
-          actual_time: task.totalTimeSpent || 0,
-        });
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await supabase.from('task_completion_history').insert({
+            task_id: id,
+            task_title: task.title,
+            estimated_time: task.estimatedTime || null,
+            actual_time: task.totalTimeSpent || 0,
+            user_id: user.id,
+          });
+        }
       } catch (error) {
         console.error('Error recording completion history:', error);
       }
       toast.success('Task marked as complete! 🎉');
     }
 
-    setTasks(tasks.map(t => {
-      if (t.id === id) {
-        if (newCompleted) {
-          return { ...t, completed: true, progress: 100 };
-        } else {
-          return { ...t, completed: false };
-        }
-      }
-      return t;
-    }));
+    await updateTask(id, {
+      completed: newCompleted,
+      progress: newCompleted ? 100 : task.progress
+    });
   };
 
-  const handleClearAll = () => {
-    setTasks([]);
+  const handleClearAll = async () => {
+    for (const task of tasks) {
+      await deleteTask(task.id);
+    }
     toast.success('All tasks cleared!');
   };
 
@@ -249,16 +166,23 @@ const Index = () => {
   };
 
   const handleTagsChange = (taskId: string, tags: Tag[]) => {
-    setTasks(tasks.map(t => t.id === taskId ? { ...t, tags } : t));
+    // Tags are managed through TagManager component which updates the database directly
+    // The task list will be updated via realtime subscription
   };
 
   const handleSubtasksChange = (taskId: string, subtasks: Subtask[]) => {
-    setTasks(tasks.map(t => t.id === taskId ? { ...t, subtasks } : t));
+    // Subtasks are managed through SubtaskManager component which updates the database directly
+    // The task list will be updated via realtime subscription
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+      {isLoading ? (
+        <div className="flex items-center justify-center min-h-screen">
+          <p className="text-muted-foreground">Loading your tasks...</p>
+        </div>
+      ) : (
+        <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}
         <header className="mb-8 flex items-center justify-between flex-wrap gap-4">
           <div>
@@ -268,6 +192,14 @@ const Index = () => {
             <p className="text-muted-foreground">Track your progress and stay organized</p>
           </div>
           <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate('/settings')}
+              title="Settings"
+            >
+              <SettingsIcon className="h-5 w-5" />
+            </Button>
             <ThemeToggle />
             <Button
               variant="outline"
@@ -275,6 +207,7 @@ const Index = () => {
               onClick={async () => {
                 await supabase.auth.signOut();
                 navigate('/auth');
+                toast.success('Signed out successfully');
               }}
             >
               Sign Out
@@ -414,7 +347,13 @@ const Index = () => {
           <TabsContent value="analytics" className="space-y-6">
             <WeeklySummary tasks={tasks} />
             <ProgressChart tasks={tasks} />
-            <DataExport tasks={tasks} onImport={(importedTasks) => setTasks(importedTasks)} />
+            <DataExport tasks={tasks} onImport={async (importedTasks) => {
+              // Import tasks to database
+              for (const task of importedTasks) {
+                await addTask(task);
+              }
+              toast.success('Tasks imported successfully');
+            }} />
           </TabsContent>
         </Tabs>
 
@@ -426,6 +365,7 @@ const Index = () => {
           editTask={editingTask}
         />
       </div>
+      )}
     </div>
   );
 };

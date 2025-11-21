@@ -259,6 +259,102 @@ export type Database = {
         }
         Relationships: []
       }
+      tasks: {
+        Row: {
+          category: string
+          completed: boolean
+          created_at: string
+          description: string | null
+          due_date: string | null
+          estimated_time: number | null
+          id: string
+          notes: string | null
+          priority: string
+          progress: number
+          recurring_end_date: string | null
+          recurring_type: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          completed?: boolean
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          estimated_time?: number | null
+          id?: string
+          notes?: string | null
+          priority?: string
+          progress?: number
+          recurring_end_date?: string | null
+          recurring_type?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          completed?: boolean
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          estimated_time?: number | null
+          id?: string
+          notes?: string | null
+          priority?: string
+          progress?: number
+          recurring_end_date?: string | null
+          recurring_type?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_settings: {
+        Row: {
+          created_at: string
+          default_view: string | null
+          display_name: string | null
+          email_notifications: boolean | null
+          id: string
+          language: string | null
+          task_reminders: boolean | null
+          theme_preference: string | null
+          timezone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          default_view?: string | null
+          display_name?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          language?: string | null
+          task_reminders?: boolean | null
+          theme_preference?: string | null
+          timezone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          default_view?: string | null
+          display_name?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          language?: string | null
+          task_reminders?: boolean | null
+          theme_preference?: string | null
+          timezone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       weekly_summaries: {
         Row: {
           created_at: string
