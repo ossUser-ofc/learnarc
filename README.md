@@ -1,73 +1,233 @@
-# Welcome to your Lovable project
+# 📚 Homework Tracker Pro
 
-## Project info
+A comprehensive, AI-powered task management system designed specifically for students to organize homework, track progress, manage study time, and boost productivity.
 
-**URL**: https://lovable.dev/projects/cb46e3e1-680b-4751-9e81-cf335d6c3b5c
+![Homework Tracker Pro](https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=1200&h=400&fit=crop)
 
-## How can I edit this code?
+## ✨ Features
 
-There are several ways of editing your application.
+### 📝 Task Management
+- **Create & Organize Tasks**: Categorize by homework, revision, projects, or other
+- **Priority Levels**: Set low, medium, or high priority for better focus
+- **Progress Tracking**: Track completion percentage with visual sliders
+- **Subtask Management**: Break down large tasks into manageable subtasks
+- **Task Dependencies**: Link related tasks to maintain proper workflow
+- **Recurring Tasks**: Set up daily, weekly, or monthly recurring assignments
+- **Full Markdown Support**: Rich text formatting in task descriptions and notes
 
-**Use Lovable**
+### 🎯 Multiple Views
+- **List View**: Traditional task list with detailed information
+- **Kanban Board**: Drag-and-drop cards across Todo, In Progress, and Done columns
+- **Calendar View**: See all tasks on a monthly calendar with due dates
+- **Timeline View**: Visualize task schedules and dependencies on a timeline
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/cb46e3e1-680b-4751-9e81-cf335d6c3b5c) and start prompting.
+### 🤖 AI-Powered Features
+- **Smart Task Analysis**: AI analyzes task complexity and suggests time estimates
+- **Study Tips**: Get personalized tips based on task category and difficulty
+- **Priority Recommendations**: AI suggests optimal priority levels
+- **Weekly Summaries**: Automatic AI-generated weekly performance reports
+- **Subtask Generation**: AI breaks down complex tasks into subtasks
 
-Changes made via Lovable will be committed automatically to this repo.
+### ⏱️ Time Tracking
+- **Built-in Timer**: Track study time for each task with start/stop timer
+- **Session History**: View all time tracking sessions
+- **Total Time Spent**: See cumulative time across all tasks
+- **Completion Analytics**: Compare estimated vs actual time spent
 
-**Use your preferred IDE**
+### 📓 Note-Taking System
+- **Rich Text Notes**: Create notes with full markdown support
+- **Folder Organization**: Organize notes in custom folders
+- **Tag System**: Tag notes for easy filtering and search
+- **Task Linking**: Associate notes with specific tasks
+- **Markdown Toolbar**: Quick formatting buttons for markdown syntax
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 📊 Analytics & Insights
+- **Progress Charts**: Visual graphs showing task completion over time
+- **Category Breakdown**: See time distribution across different categories
+- **Completion Statistics**: Track tasks completed, in progress, and pending
+- **Study Patterns**: Identify your most productive days and categories
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### ⚙️ Advanced Settings
+- **Profile Customization**: Set display name and preferences
+- **Notification Controls**: Toggle email notifications and task reminders
+- **View Preferences**: Choose your default view (list, kanban, calendar, timeline)
+- **Theme Selection**: Light, dark, or system-based theme
+- **Timezone & Language**: Regional settings for accurate due dates
+- **Data Export**: Export all your tasks and notes to JSON
 
-Follow these steps:
+### 🔒 Security & Privacy
+- **User Authentication**: Secure email/password authentication
+- **Row-Level Security**: Database-level isolation between users
+- **Encrypted Storage**: All data encrypted at rest
+- **Session Management**: Automatic token refresh and secure logout
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+ and npm
+- Modern web browser (Chrome, Firefox, Safari, Edge)
+
+### Installation
+
+1. Clone the repository:
+```bash
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+2. Install dependencies:
+```bash
+npm install
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. Set up environment variables (automatically provided in Lovable)
+
+4. Start the development server:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+5. Open your browser and navigate to `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### First Time Setup
 
-**Use GitHub Codespaces**
+1. **Create an Account**: Sign up with your email and password
+2. **Create Your First Task**: Click the "Add Task" button
+3. **Explore Views**: Try out different views (List, Kanban, Calendar, Timeline)
+4. **Set Up Notes**: Navigate to the Notebook tab to create your first note
+5. **Adjust Settings**: Click the Settings icon to customize your experience
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🛠️ Technologies Used
 
-## What technologies are used for this project?
+### Frontend
+- **React 18**: Modern UI framework
+- **TypeScript**: Type-safe development
+- **Vite**: Fast build tool and dev server
+- **Tailwind CSS**: Utility-first styling
+- **Shadcn UI**: High-quality component library
+- **React Router**: Client-side routing
+- **React Hook Form**: Form management
+- **Zod**: Schema validation
+- **Date-fns**: Date manipulation
+- **Recharts**: Data visualization
+- **React Markdown**: Full markdown support with KaTeX math
 
-This project is built with:
+### Backend (Lovable Cloud)
+- **PostgreSQL**: Relational database with full ACID compliance
+- **Row-Level Security (RLS)**: User data isolation at database level
+- **Edge Functions**: Serverless functions for AI integration
+- **Authentication**: JWT-based authentication with automatic refresh
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### AI Integration
+- **Lovable AI Gateway**: Multi-model AI access
+- **Gemini 2.5 Flash**: Fast AI analysis and summaries
+- **Streaming Responses**: Real-time AI output
 
-## How can I deploy this project?
+## 📁 Project Structure
 
-Simply open [Lovable](https://lovable.dev/projects/cb46e3e1-680b-4751-9e81-cf335d6c3b5c) and click on Share -> Publish.
+```
+homework-tracker/
+├── src/
+│   ├── components/        # Reusable UI components
+│   │   ├── ui/           # Shadcn UI components
+│   │   ├── TaskCard.tsx
+│   │   ├── KanbanView.tsx
+│   │   ├── CalendarView.tsx
+│   │   ├── NotebookView.tsx
+│   │   ├── MarkdownRenderer.tsx
+│   │   └── ...
+│   ├── pages/            # Route pages
+│   │   ├── Index.tsx     # Main dashboard
+│   │   ├── Auth.tsx      # Login/signup
+│   │   └── Settings.tsx  # User settings
+│   ├── hooks/            # Custom React hooks
+│   │   ├── useTasks.ts   # Task management hook
+│   │   └── useLocalStorage.ts
+│   ├── types/            # TypeScript type definitions
+│   │   └── task.ts
+│   ├── lib/              # Utility functions
+│   │   └── utils.ts
+│   └── integrations/     # External integrations
+│       └── supabase/
+├── supabase/
+│   ├── functions/        # Edge functions
+│   │   ├── analyze-task/
+│   │   └── generate-weekly-summary/
+│   └── migrations/       # Database migrations
+├── public/               # Static assets
+└── package.json
+```
 
-## Can I connect a custom domain to my Lovable project?
+## 🔐 Security Features
 
-Yes, you can!
+- **Authentication Required**: All features require user login
+- **User Data Isolation**: Users can only access their own data via RLS policies
+- **Secure Edge Functions**: JWT verification on all API endpoints
+- **Input Validation**: Comprehensive validation on all user inputs
+- **XSS Protection**: Markdown sanitization to prevent script injection
+- **SQL Injection Prevention**: Parameterized queries and RLS policies
+- **Session Security**: Automatic token refresh and secure logout
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🎨 Customization
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### Themes
+The app supports light and dark themes with automatic system detection. Customize colors in `src/index.css`.
+
+### Categories
+Modify task categories in `src/types/task.ts`:
+
+```typescript
+export type TaskCategory = 'homework' | 'revision' | 'projects' | 'other';
+```
+
+## 📊 Database Schema
+
+### Main Tables
+- **tasks**: Core task data with progress tracking and markdown support
+- **subtasks**: Task breakdowns
+- **notes**: Rich text notes with markdown rendering
+- **tags**: Custom tags for organization
+- **task_tags**: Many-to-many relationship
+- **task_time_sessions**: Time tracking records
+- **ai_analysis**: AI-generated insights
+- **weekly_summaries**: AI-generated weekly reports
+- **user_settings**: User preferences and settings
+
+All tables have proper RLS policies ensuring user data isolation.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📝 License
+
+This project is licensed under the MIT License.
+
+## 🙏 Acknowledgments
+
+- Built with [Lovable](https://lovable.dev) - AI-powered development platform
+- UI components from [Shadcn UI](https://ui.shadcn.com/)
+- Icons from [Lucide](https://lucide.dev/)
+- Backend by Lovable Cloud (powered by Supabase)
+- AI powered by Lovable AI Gateway (Gemini models)
+
+## 📧 Support
+
+For support, open an issue on GitHub.
+
+## 🗺️ Roadmap
+
+- [ ] Mobile app (React Native)
+- [ ] Collaborative study groups
+- [ ] Pomodoro timer integration
+- [ ] Study habit analytics dashboard
+- [ ] Integration with external calendars
+- [ ] PDF annotation tools
+- [ ] Flashcard system
+- [ ] Grade tracking
+- [ ] Course schedule management
+- [ ] Voice notes and dictation
+
+---
+
+Made with ❤️ for students everywhere.

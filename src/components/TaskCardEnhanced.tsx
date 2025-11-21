@@ -11,6 +11,7 @@ import { TaskTimer } from './TaskTimer';
 import { AIAnalysisPanel } from './AIAnalysisPanel';
 import { SubtaskManager } from './SubtaskManager';
 import { PriorityBadge } from './PrioritySelector';
+import { TaskDescriptionDisplay } from './TaskDescriptionDisplay';
 import { useState } from 'react';
 
 interface TaskCardEnhancedProps {
@@ -59,7 +60,10 @@ export function TaskCardEnhanced({
                 {task.title}
               </h3>
               {task.description && (
-                <p className="text-sm text-muted-foreground">{task.description}</p>
+                <TaskDescriptionDisplay 
+                  description={task.description} 
+                  className="text-sm text-muted-foreground" 
+                />
               )}
             </div>
           </div>
