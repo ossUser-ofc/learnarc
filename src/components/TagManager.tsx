@@ -51,9 +51,18 @@ export function TagManager({ taskId, selectedTags, onTagsChange }: TagManagerPro
   const createTag = async () => {
     if (!newTagName.trim()) return;
 
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error('You must be logged in to create tags');
+      return;
+    }
+
     const { data, error } = await supabase
       .from('tags')
-      .insert({ name: newTagName.trim() })
+      .insert({ 
+        name: newTagName.trim(),
+        user_id: user.id,
+      })
       .select()
       .single();
 
@@ -80,9 +89,19 @@ export function TagManager({ taskId, selectedTags, onTagsChange }: TagManagerPro
       return;
     }
 
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error('You must be logged in to add tags');
+      return;
+    }
+
     const { error } = await supabase
       .from('task_tags')
-      .insert({ task_id: taskId, tag_id: tag.id });
+      .insert({ 
+        task_id: taskId, 
+        tag_id: tag.id,
+        user_id: user.id,
+      });
 
     if (error) {
       toast.error('Failed to add tag');

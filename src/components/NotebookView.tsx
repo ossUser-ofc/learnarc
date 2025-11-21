@@ -60,6 +60,12 @@ export function NotebookView() {
 
   const handleSaveNote = async (noteData: Partial<Note>) => {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error('You must be logged in to save notes');
+        return;
+      }
+
       if (editingNote) {
         const { error } = await supabase
           .from('notes')
@@ -82,6 +88,7 @@ export function NotebookView() {
             folder: noteData.folder,
             tags: noteData.tags,
             task_id: noteData.taskId,
+            user_id: user.id,
           });
 
         if (error) throw error;

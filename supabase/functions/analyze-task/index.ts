@@ -12,6 +12,30 @@ serve(async (req) => {
   }
 
   try {
+    // Get authenticated user from JWT
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Missing authorization header' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } }
+    });
+
+    const { data: { user }, error: authError } = await supabaseClient.auth.getUser(token);
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid or expired token' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { taskId, title, description, category, progress, totalTimeSpent } = await req.json();
 
     console.log('Analyzing task:', { taskId, title, category, progress, totalTimeSpent });
@@ -21,16 +45,16 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY is not configured');
     }
 
-    // Create Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Create Supabase client with service role for database operations
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Fetch completion history for this task title to provide statistical insights
+    // Fetch completion history for this user's tasks with the same title
     const { data: historyData } = await supabase
       .from('task_completion_history')
       .select('*')
       .eq('task_title', title)
+      .eq('user_id', user.id)
       .order('completed_at', { ascending: false })
       .limit(10);
 
@@ -140,11 +164,12 @@ Format your response with markdown for the analysis field. Use JSON with these f
 
     const result = JSON.parse(toolCall.function.arguments);
 
-    // Store the analysis in the database
+    // Store the analysis in the database with user_id
     const { error: insertError } = await supabase
       .from('ai_analysis')
       .insert({
         task_id: taskId,
+        user_id: user.id,
         analysis_type: 'task_analysis',
         input_data: { title, description, category, progress },
         result: result,

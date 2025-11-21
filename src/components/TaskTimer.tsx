@@ -44,10 +44,17 @@ export function TaskTimer({ taskId, taskTitle, totalTimeSpent = 0 }: TaskTimerPr
 
   const handleStart = async () => {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error('You must be logged in to track time');
+        return;
+      }
+
       const { data, error } = await supabase
         .from('task_time_sessions')
         .insert({
           task_id: taskId,
+          user_id: user.id,
           start_time: new Date().toISOString(),
         })
         .select()
