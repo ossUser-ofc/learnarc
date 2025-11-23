@@ -25,6 +25,9 @@ interface UserSettings {
   themePreference: string;
   timezone: string;
   language: string;
+  currentSchool: string;
+  targetUniversity: string;
+  educationLevel: string;
 }
 
 export default function Settings() {
@@ -37,6 +40,9 @@ export default function Settings() {
     themePreference: 'system',
     timezone: 'UTC',
     language: 'en',
+    currentSchool: '',
+    targetUniversity: '',
+    educationLevel: 'high_school',
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -70,6 +76,9 @@ export default function Settings() {
           themePreference: data.theme_preference,
           timezone: data.timezone,
           language: data.language,
+          currentSchool: data.current_school || '',
+          targetUniversity: data.target_university || '',
+          educationLevel: data.education_level || 'high_school',
         });
       }
     } catch (error) {
@@ -97,6 +106,9 @@ export default function Settings() {
           theme_preference: settings.themePreference,
           timezone: settings.timezone,
           language: settings.language,
+          current_school: settings.currentSchool,
+          target_university: settings.targetUniversity,
+          education_level: settings.educationLevel,
         });
 
       if (error) throw error;
@@ -280,6 +292,54 @@ export default function Settings() {
                     <SelectItem value="de">Deutsch</SelectItem>
                     <SelectItem value="ja">日本語</SelectItem>
                     <SelectItem value="zh">中文</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </Card>
+
+          {/* Academic Profile */}
+          <Card className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Academic Profile</h2>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="currentSchool">Current School</Label>
+                <Input
+                  id="currentSchool"
+                  value={settings.currentSchool}
+                  onChange={(e) => setSettings({ ...settings, currentSchool: e.target.value })}
+                  placeholder="e.g., Michigan High School"
+                />
+                <p className="text-sm text-muted-foreground mt-1">
+                  Helps AI understand your current academic level
+                </p>
+              </div>
+              <div>
+                <Label htmlFor="targetUniversity">Target University</Label>
+                <Input
+                  id="targetUniversity"
+                  value={settings.targetUniversity}
+                  onChange={(e) => setSettings({ ...settings, targetUniversity: e.target.value })}
+                  placeholder="e.g., Harvard University"
+                />
+                <p className="text-sm text-muted-foreground mt-1">
+                  AI will tailor recommendations based on your goals
+                </p>
+              </div>
+              <div>
+                <Label htmlFor="educationLevel">Education Level</Label>
+                <Select
+                  value={settings.educationLevel}
+                  onValueChange={(value: string) => setSettings({ ...settings, educationLevel: value })}
+                >
+                  <SelectTrigger id="educationLevel">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="middle_school">Middle School</SelectItem>
+                    <SelectItem value="high_school">High School</SelectItem>
+                    <SelectItem value="undergraduate">Undergraduate</SelectItem>
+                    <SelectItem value="graduate">Graduate</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
