@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Plus, Filter, Trash2, ListTodo, BarChart3, BookOpen, Calendar, Activity, LayoutGrid, Settings as SettingsIcon } from 'lucide-react';
+import { Plus, Filter, Trash2, ListTodo, BarChart3, BookOpen, Calendar, Activity, LayoutGrid, Settings as SettingsIcon, Github } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -211,6 +211,14 @@ const Index = () => {
             </p>
           </div>
           <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => window.open('https://github.com/ossUser-Swift/study-progress-hub', '_blank')}
+              title="View on GitHub"
+            >
+              <Github className="h-5 w-5" />
+            </Button>
             <Button
               variant="ghost"
               size="icon"
