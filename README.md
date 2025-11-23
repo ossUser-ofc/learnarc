@@ -1,4 +1,7 @@
 [![Please Star](https://img.shields.io/badge/⭐_Star_this_repo!-FFD700?style=flat)](https://github.com/ossUser-Swift/study-progress-hub/stargazers)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-4CAF50?style=flat)](https://study-progress-hub.lovable.app)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](LICENSE.md)
+
 # 📚 Homework Tracker Pro
 
 [![Built with Lovable](https://img.shields.io/badge/Built_with-Lovable-6366f1?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMiA3TDEyIDEyTDIyIDdMMTIgMloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0yIDEyTDEyIDE3TDIyIDEyIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPHBhdGggZD0iTTIgMTdMMTIgMjJMMjIgMTciIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPgo8L3N2Zz4K)](https://lovable.dev)
@@ -7,7 +10,9 @@
 [![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-A comprehensive, AI-powered task management system designed specifically for students to organize homework, track progress, manage study time, and boost productivity.
+> **A comprehensive, AI-powered task management system designed specifically for students to organize homework, track progress, manage study time, and boost productivity.**
+
+🌐 **[Try it Live](https://study-progress-hub.lovable.app)** | 📖 **[Documentation](#-features)** | 🐛 **[Report Bug](https://github.com/ossUser-Swift/study-progress-hub/issues)** | 💡 **[Request Feature](https://github.com/ossUser-Swift/study-progress-hub/issues)**
 
 ## ✨ Features
 
@@ -76,8 +81,8 @@ A comprehensive, AI-powered task management system designed specifically for stu
 
 1. Clone the repository:
 ```bash
-git clone <YOUR_GIT_URL>
-cd <YOUR_PROJECT_NAME>
+git clone https://github.com/ossUser-Swift/study-progress-hub.git
+cd study-progress-hub
 ```
 
 2. Install dependencies:
@@ -202,11 +207,11 @@ All tables have proper RLS policies ensuring user data isolation.
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting a Pull Request.
 
 ## 📝 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ## 🙏 Acknowledgments
 
@@ -218,7 +223,7 @@ This project is licensed under the MIT License.
 
 ## 📧 Support
 
-For support, open an issue on GitHub.
+For support, [open an issue](https://github.com/ossUser-Swift/study-progress-hub/issues) on GitHub or visit our [live demo](https://study-progress-hub.lovable.app).
 
 ## 🗺️ Roadmap
 
