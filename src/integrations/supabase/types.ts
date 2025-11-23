@@ -316,11 +316,14 @@ export type Database = {
       user_settings: {
         Row: {
           created_at: string
+          current_school: string | null
           default_view: string | null
           display_name: string | null
+          education_level: string | null
           email_notifications: boolean | null
           id: string
           language: string | null
+          target_university: string | null
           task_reminders: boolean | null
           theme_preference: string | null
           timezone: string | null
@@ -329,11 +332,14 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          current_school?: string | null
           default_view?: string | null
           display_name?: string | null
+          education_level?: string | null
           email_notifications?: boolean | null
           id?: string
           language?: string | null
+          target_university?: string | null
           task_reminders?: boolean | null
           theme_preference?: string | null
           timezone?: string | null
@@ -342,11 +348,14 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          current_school?: string | null
           default_view?: string | null
           display_name?: string | null
+          education_level?: string | null
           email_notifications?: boolean | null
           id?: string
           language?: string | null
+          target_university?: string | null
           task_reminders?: boolean | null
           theme_preference?: string | null
           timezone?: string | null

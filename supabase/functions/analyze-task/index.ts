@@ -49,6 +49,13 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    // Get user's school settings for context
+    const { data: settings } = await supabase
+      .from('user_settings')
+      .select('current_school, target_university, education_level')
+      .eq('user_id', user.id)
+      .single();
+
     // Fetch completion history for this user's tasks with the same title
     const { data: historyData } = await supabase
       .from('task_completion_history')
@@ -69,10 +76,21 @@ serve(async (req) => {
 ${totalTimeSpent ? `- Current time spent: ${Math.round(totalTimeSpent / 60)} minutes` : ''}`;
     }
 
+    // Build school context
+    let schoolContext = '';
+    if (settings?.current_school || settings?.target_university) {
+      schoolContext = `\n\nStudent Profile:
+- Current school: ${settings.current_school || 'Not specified'}
+- Target university: ${settings.target_university || 'Not specified'}
+- Education level: ${settings.education_level || 'high_school'}
+
+Please tailor your analysis and recommendations to match their academic level and aspirations.`;
+    }
+
     // Prepare the analysis prompt
     const systemPrompt = `You are an AI study assistant that helps students analyze their homework and revision tasks. Provide actionable insights, study tips, time estimates, and suggestions for improvement. Use markdown formatting for better readability. When historical data is available, provide specific insights about performance trends.`;
     
-    const userPrompt = `Analyze this study task:
+    const userPrompt = `Analyze this study task:${schoolContext}
 Title: ${title}
 Description: ${description || 'No description provided'}
 Category: ${category}

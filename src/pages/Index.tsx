@@ -11,6 +11,7 @@ import { CalendarView } from '@/components/CalendarView';
 import { TimelineView } from '@/components/TimelineView';
 import { KanbanView } from '@/components/KanbanView';
 import { WeeklySummary } from '@/components/WeeklySummary';
+import { TopicAnalysisPanel } from '@/components/TopicAnalysisPanel';
 import { DataExport } from '@/components/DataExport';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { Button } from '@/components/ui/button';
@@ -372,7 +373,10 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">
-            <WeeklySummary tasks={tasks} />
+            <div className="grid gap-6 lg:grid-cols-2">
+              <WeeklySummary tasks={tasks} />
+              <TopicAnalysisPanel />
+            </div>
             <ProgressChart tasks={tasks} />
             <DataExport tasks={tasks} onImport={async (importedTasks) => {
               // Import tasks to database
