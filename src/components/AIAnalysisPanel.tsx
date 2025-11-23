@@ -117,14 +117,10 @@ export function AIAnalysisPanel({ task }: AIAnalysisPanelProps) {
                 <Lightbulb className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm font-medium">Study Tips</span>
               </div>
-              <ul className="space-y-2">
-                {analysis.tips.map((tip, index) => (
-                  <li key={index} className="flex gap-2 text-sm text-muted-foreground">
-                    <span className="text-primary">•</span>
-                    <span>{tip}</span>
-                  </li>
-                ))}
-              </ul>
+              <MarkdownRenderer 
+                content={analysis.tips.map((tip: string) => `- ${tip}`).join('\n')} 
+                className="text-sm"
+              />
             </div>
 
             {/* Subtasks */}
@@ -134,14 +130,10 @@ export function AIAnalysisPanel({ task }: AIAnalysisPanelProps) {
                   <ListChecks className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm font-medium">Suggested Breakdown</span>
                 </div>
-                <ul className="space-y-2">
-                  {analysis.subtasks.map((subtask, index) => (
-                    <li key={index} className="flex gap-2 text-sm text-muted-foreground">
-                      <span className="text-primary font-medium">{index + 1}.</span>
-                      <span>{subtask}</span>
-                    </li>
-                  ))}
-                </ul>
+                <MarkdownRenderer 
+                  content={analysis.subtasks.map((subtask: string, index: number) => `${index + 1}. ${subtask}`).join('\n')} 
+                  className="text-sm"
+                />
               </div>
             )}
           </div>
