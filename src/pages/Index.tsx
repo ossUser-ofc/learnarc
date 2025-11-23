@@ -44,13 +44,30 @@ const Index = () => {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<TaskCategory | 'all'>('all');
   const [statusFilter, setStatusFilter] = useState<'all' | 'completed' | 'incomplete'>('all');
+  const [userName, setUserName] = useState<string>('');
 
-  // Check authentication
+  // Check authentication and load user settings
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         navigate('/auth');
+        return;
+      }
+      
+      // Load user settings for display name
+      const { data: settings } = await supabase
+        .from('user_settings')
+        .select('display_name')
+        .eq('user_id', session.user.id)
+        .single();
+      
+      if (settings?.display_name) {
+        setUserName(settings.display_name);
+      } else {
+        // Fallback to email username
+        const emailName = session.user.email?.split('@')[0] || 'User';
+        setUserName(emailName);
       }
     };
     checkAuth();
@@ -189,7 +206,9 @@ const Index = () => {
             <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               Homework & Revision Tracker
             </h1>
-            <p className="text-muted-foreground">Track your progress and stay organized</p>
+            <p className="text-muted-foreground">
+              {userName && `Hi ${userName}! `}Track your progress and stay organized
+            </p>
           </div>
           <div className="flex items-center gap-2">
             <Button

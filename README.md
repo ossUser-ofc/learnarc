@@ -1,8 +1,13 @@
 # 📚 Homework Tracker Pro
 
-A comprehensive, AI-powered task management system designed specifically for students to organize homework, track progress, manage study time, and boost productivity.
+[![Built with Lovable](https://img.shields.io/badge/Built_with-Lovable-6366f1?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMiA3TDEyIDEyTDIyIDdMMTIgMloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0yIDEyTDEyIDE3TDIyIDEyIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPHBhdGggZD0iTTIgMTdMMTIgMjJMMjIgMTciIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPgo8L3N2Zz4K)](https://lovable.dev)
+[![GitHub User](https://img.shields.io/badge/ossUser-0078D4?style=flat&logo=github&logoColor=white)](https://github.com/ossUser-Swift)
+[![Please Star](https://img.shields.io/badge/⭐_Star_this_repo!-FFD700?style=flat)](https://github.com/ossUser-Swift/study-progress-hub/stargazers)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-![Homework Tracker Pro](https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=1200&h=400&fit=crop)
+A comprehensive, AI-powered task management system designed specifically for students to organize homework, track progress, manage study time, and boost productivity.
 
 ## ✨ Features
 

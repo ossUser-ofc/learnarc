@@ -174,14 +174,10 @@ export function WeeklySummary({ tasks }: WeeklySummaryProps) {
             {summary.insights.suggestions && summary.insights.suggestions.length > 0 && (
               <div className="space-y-2">
                 <h4 className="font-medium">Recommendations</h4>
-                <ul className="space-y-2">
-                  {summary.insights.suggestions.map((suggestion, index) => (
-                    <li key={index} className="flex gap-2 text-sm text-muted-foreground">
-                      <span className="text-primary">•</span>
-                      <span>{suggestion}</span>
-                    </li>
-                  ))}
-                </ul>
+                <MarkdownRenderer 
+                  content={summary.insights.suggestions.map((s: string) => `- ${s}`).join('\n')} 
+                  className="text-sm"
+                />
               </div>
             )}
           </div>
