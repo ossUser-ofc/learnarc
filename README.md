@@ -1,5 +1,4 @@
 [![Please Star](https://img.shields.io/badge/⭐_Star_this_repo!-FFD700?style=flat)](https://github.com/ossUser-Swift/study-progress-hub/stargazers)
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-4CAF50?style=flat)](https://study-progress-hub.lovable.app)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](LICENSE.md)
 
 # learnarc
