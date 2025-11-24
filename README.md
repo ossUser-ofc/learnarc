@@ -12,11 +12,11 @@
 
 > **A comprehensive, AI-powered task management system designed specifically for students to organize homework, track progress, manage study time, and boost productivity.**
 
-🌐 **[Try it Live](https://study-progress-hub.lovable.app)** | 📖 **[Documentation](#-features)** | 🐛 **[Report Bug](https://github.com/ossUser-Swift/study-progress-hub/issues)** | 💡 **[Request Feature](https://github.com/ossUser-Swift/study-progress-hub/issues)**
+ **[Try it Live](https://study-progress-hub.lovable.app)** | 📖 **[Documentation](#-features)** | 🐛 **[Report Bug](https://github.com/ossUser-Swift/study-progress-hub/issues)** | 💡 **[Request Feature](https://github.com/ossUser-Swift/study-progress-hub/issues)**
 
-## ✨ Features
+## Features
 
-### 📝 Task Management
+###  Task Management
 - **Create & Organize Tasks**: Categorize by homework, revision, projects, or other
 - **Priority Levels**: Set low, medium, or high priority for better focus
 - **Progress Tracking**: Track completion percentage with visual sliders
@@ -25,33 +25,33 @@
 - **Recurring Tasks**: Set up daily, weekly, or monthly recurring assignments
 - **Full Markdown Support**: Rich text formatting in task descriptions and notes
 
-### 🎯 Multiple Views
+### Multiple Views
 - **List View**: Traditional task list with detailed information
 - **Kanban Board**: Drag-and-drop cards across Todo, In Progress, and Done columns
 - **Calendar View**: See all tasks on a monthly calendar with due dates
 - **Timeline View**: Visualize task schedules and dependencies on a timeline
 
-### 🤖 AI-Powered Features
+### AI-Powered Features
 - **Smart Task Analysis**: AI analyzes task complexity and suggests time estimates
 - **Study Tips**: Get personalized tips based on task category and difficulty
 - **Priority Recommendations**: AI suggests optimal priority levels
 - **Weekly Summaries**: Automatic AI-generated weekly performance reports
 - **Subtask Generation**: AI breaks down complex tasks into subtasks
 
-### ⏱️ Time Tracking
+### Time Tracking
 - **Built-in Timer**: Track study time for each task with start/stop timer
 - **Session History**: View all time tracking sessions
 - **Total Time Spent**: See cumulative time across all tasks
 - **Completion Analytics**: Compare estimated vs actual time spent
 
-### 📓 Note-Taking System
+### Note-Taking System
 - **Rich Text Notes**: Create notes with full markdown support
 - **Folder Organization**: Organize notes in custom folders
 - **Tag System**: Tag notes for easy filtering and search
 - **Task Linking**: Associate notes with specific tasks
 - **Markdown Toolbar**: Quick formatting buttons for markdown syntax
 
-### 📊 Analytics & Insights
+### Analytics & Insights
 - **Progress Charts**: Visual graphs showing task completion over time
 - **Category Breakdown**: See time distribution across different categories
 - **Completion Statistics**: Track tasks completed, in progress, and pending
@@ -65,13 +65,13 @@
 - **Timezone & Language**: Regional settings for accurate due dates
 - **Data Export**: Export all your tasks and notes to JSON
 
-### 🔒 Security & Privacy
+### Security & Privacy
 - **User Authentication**: Secure email/password authentication
 - **Row-Level Security**: Database-level isolation between users
 - **Encrypted Storage**: All data encrypted at rest
 - **Session Management**: Automatic token refresh and secure logout
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js 18+ and npm
@@ -107,7 +107,7 @@ npm run dev
 4. **Set Up Notes**: Navigate to the Notebook tab to create your first note
 5. **Adjust Settings**: Click the Settings icon to customize your experience
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 ### Frontend
 - **React 18**: Modern UI framework
@@ -133,7 +133,7 @@ npm run dev
 - **Gemini 2.5 Flash**: Fast AI analysis and summaries
 - **Streaming Responses**: Real-time AI output
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 homework-tracker/
@@ -168,7 +168,7 @@ homework-tracker/
 └── package.json
 ```
 
-## 🔐 Security Features
+## Security Features
 
 - **Authentication Required**: All features require user login
 - **User Data Isolation**: Users can only access their own data via RLS policies
@@ -178,7 +178,7 @@ homework-tracker/
 - **SQL Injection Prevention**: Parameterized queries and RLS policies
 - **Session Security**: Automatic token refresh and secure logout
 
-## 🎨 Customization
+## Customization
 
 ### Themes
 The app supports light and dark themes with automatic system detection. Customize colors in `src/index.css`.
@@ -190,7 +190,7 @@ Modify task categories in `src/types/task.ts`:
 export type TaskCategory = 'homework' | 'revision' | 'projects' | 'other';
 ```
 
-## 📊 Database Schema
+## Database Schema
 
 ### Main Tables
 - **tasks**: Core task data with progress tracking and markdown support
@@ -205,15 +205,15 @@ export type TaskCategory = 'homework' | 'revision' | 'projects' | 'other';
 
 All tables have proper RLS policies ensuring user data isolation.
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting a Pull Request.
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Built with [Lovable](https://lovable.dev) - AI-powered development platform
 - UI components from [Shadcn UI](https://ui.shadcn.com/)
@@ -221,11 +221,11 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - Backend by Lovable Cloud (powered by Supabase)
 - AI powered by Lovable AI Gateway (Gemini models)
 
-## 📧 Support
+## Support
 
 For support, [open an issue](https://github.com/ossUser-Swift/study-progress-hub/issues) on GitHub or visit our [live demo](https://study-progress-hub.lovable.app).
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [ ] Mobile app (React Native)
 - [ ] Collaborative study groups
