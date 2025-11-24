@@ -2,7 +2,7 @@
 [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-4CAF50?style=flat)](https://study-progress-hub.lovable.app)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](LICENSE.md)
 
-# 📚 Homework Tracker Pro
+# learnarc
 
 [![Built with Lovable](https://img.shields.io/badge/Built_with-Lovable-6366f1?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMiA3TDEyIDEyTDIyIDdMMTIgMloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0yIDEyTDEyIDE3TDIyIDEyIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPHBhdGggZD0iTTIgMTdMMTIgMjJMMjIgMTciIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPgo8L3N2Zz4K)](https://lovable.dev)
 [![GitHub User](https://img.shields.io/badge/ossUser-0078D4?style=flat&logo=github&logoColor=white)](https://github.com/ossUser-Swift)
