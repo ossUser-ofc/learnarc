@@ -3,8 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card } from '@/components/ui/card';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { supabase } from '@/integrations/supabase/client';
-import { Send, Bot, User, Loader2 } from 'lucide-react';
+import { Send, Bot, User, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
 import { toast } from 'sonner';
 import { MarkdownRenderer } from './MarkdownRenderer';
 
@@ -16,6 +17,7 @@ interface Message {
 const STORAGE_KEY = 'learnarc-chat-history';
 
 export const AIChat = () => {
+  const [isOpen, setIsOpen] = useState(true);
   const [messages, setMessages] = useState<Message[]>(() => {
     // Load messages from localStorage on mount
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -97,21 +99,31 @@ export const AIChat = () => {
   };
 
   return (
-    <Card className="flex flex-col h-[600px]">
-      <div className="p-4 border-b flex items-center justify-between">
-        <h3 className="font-semibold flex items-center gap-2">
-          <Bot className="h-5 w-5 text-primary" />
-          AI Study Assistant
-        </h3>
-        <Button 
-          variant="ghost" 
-          size="sm"
-          onClick={clearHistory}
-          className="text-xs"
-        >
-          Clear History
-        </Button>
-      </div>
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <Card className="flex flex-col">
+        <CollapsibleTrigger className="w-full">
+          <div className="p-4 border-b flex items-center justify-between hover:bg-muted/50 transition-colors">
+            <div className="flex items-center gap-2">
+              <Bot className="h-5 w-5 text-primary" />
+              <h3 className="font-semibold">AI Study Assistant</h3>
+            </div>
+            {isOpen ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+          </div>
+        </CollapsibleTrigger>
+
+        <CollapsibleContent>
+          <div className="flex flex-col h-[600px]">
+            <div className="p-4 border-b flex items-center justify-between">
+              <p className="text-sm text-muted-foreground">Chat with your AI assistant</p>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={clearHistory}
+                className="text-xs"
+              >
+                Clear History
+              </Button>
+            </div>
       
       <ScrollArea className="flex-1 p-4" ref={scrollRef}>
         <div className="space-y-4">
@@ -177,7 +189,10 @@ export const AIChat = () => {
             <Send className="h-4 w-4" />
           </Button>
         </div>
-      </div>
-    </Card>
+          </div>
+        </div>
+        </CollapsibleContent>
+      </Card>
+    </Collapsible>
   );
 };

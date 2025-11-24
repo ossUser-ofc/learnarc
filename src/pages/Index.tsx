@@ -14,6 +14,7 @@ import { WeeklySummary } from '@/components/WeeklySummary';
 import { TopicAnalysisPanel } from '@/components/TopicAnalysisPanel';
 import { DataExport } from '@/components/DataExport';
 import { AIChat } from '@/components/AIChat';
+import { QuizGenerator } from '@/components/QuizGenerator';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -378,6 +379,7 @@ const Index = () => {
               <WeeklySummary tasks={tasks} />
               <TopicAnalysisPanel />
             </div>
+            <QuizGenerator />
             <AIChat />
             <ProgressChart tasks={tasks} />
             <DataExport tasks={tasks} onImport={async (importedTasks) => {

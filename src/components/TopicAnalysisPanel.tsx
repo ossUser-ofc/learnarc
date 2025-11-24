@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Loader2, Clock, Brain, Lightbulb, TrendingUp } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Sparkles, Loader2, Clock, Brain, Lightbulb, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { MarkdownRenderer } from './MarkdownRenderer';
@@ -25,6 +26,7 @@ interface TopicAnalysis {
 }
 
 export function TopicAnalysisPanel() {
+  const [isOpen, setIsOpen] = useState(true);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [analysis, setAnalysis] = useState<TopicAnalysis | null>(null);
@@ -68,14 +70,19 @@ export function TopicAnalysisPanel() {
   };
 
   return (
-    <Card className="p-6">
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-primary" />
-            <h3 className="font-semibold text-lg">Topic Analysis</h3>
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <Card className="p-6">
+        <CollapsibleTrigger className="w-full">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Brain className="h-5 w-5 text-primary" />
+              <h3 className="font-semibold text-lg">Topic Analysis</h3>
+            </div>
+            {isOpen ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
           </div>
-        </div>
+        </CollapsibleTrigger>
+
+        <CollapsibleContent className="space-y-4">
 
         <div className="flex gap-2">
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
@@ -169,7 +176,8 @@ export function TopicAnalysisPanel() {
             Select a subject and click "Analyze" to get AI-powered insights with time estimates based on your study history
           </p>
         )}
-      </div>
-    </Card>
+        </CollapsibleContent>
+      </Card>
+    </Collapsible>
   );
 }
