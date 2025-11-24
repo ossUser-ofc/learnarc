@@ -55,7 +55,7 @@ export default function Settings() {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        navigate('/auth');
+        navigate('/');
         return;
       }
 
@@ -123,7 +123,7 @@ export default function Settings() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    navigate('/auth');
+    navigate('/');
     toast.success('Signed out successfully');
   };
 
@@ -143,7 +143,7 @@ export default function Settings() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/app')}
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
