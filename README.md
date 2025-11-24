@@ -12,7 +12,7 @@
 
 > **A comprehensive, AI-powered task management system designed specifically for students to organize homework, track progress, manage study time, and boost productivity.**
 
- **[Try it Live](https://study-progress-hub.lovable.app)** | 📖 **[Documentation](#-features)** | 🐛 **[Report Bug](https://github.com/ossUser-Swift/study-progress-hub/issues)** | 💡 **[Request Feature](https://github.com/ossUser-Swift/study-progress-hub/issues)**
+ **[Try it Live](https://learnarc.lovable.app)** | 📖 **[Documentation](#-features)** | 🐛 **[Report Bug](https://github.com/ossUser-Swift/study-progress-hub/issues)** | 💡 **[Request Feature](https://github.com/ossUser-Swift/study-progress-hub/issues)**
 
 ## Features
 
