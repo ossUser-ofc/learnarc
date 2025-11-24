@@ -13,16 +13,34 @@ interface Message {
   content: string;
 }
 
+const STORAGE_KEY = 'learnarc-chat-history';
+
 export const AIChat = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'assistant',
-      content: 'Hi! I\'m your AI study assistant. I can help you with task suggestions, study advice, and answer questions about your learning journey. How can I help you today?'
+  const [messages, setMessages] = useState<Message[]>(() => {
+    // Load messages from localStorage on mount
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        // If parsing fails, return default
+      }
     }
-  ]);
+    return [
+      {
+        role: 'assistant',
+        content: 'Hi! I\'m your AI study assistant. I can help you with task suggestions, study advice, and answer questions about your learning journey. I have access to your tasks and notes to provide personalized guidance. How can I help you today?'
+      }
+    ];
+  });
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+  }, [messages]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -68,13 +86,31 @@ export const AIChat = () => {
     }
   };
 
+  const clearHistory = () => {
+    const initialMessage = {
+      role: 'assistant' as const,
+      content: 'Hi! I\'m your AI study assistant. I can help you with task suggestions, study advice, and answer questions about your learning journey. I have access to your tasks and notes to provide personalized guidance. How can I help you today?'
+    };
+    setMessages([initialMessage]);
+    localStorage.removeItem(STORAGE_KEY);
+    toast.success('Chat history cleared');
+  };
+
   return (
     <Card className="flex flex-col h-[600px]">
-      <div className="p-4 border-b">
+      <div className="p-4 border-b flex items-center justify-between">
         <h3 className="font-semibold flex items-center gap-2">
           <Bot className="h-5 w-5 text-primary" />
           AI Study Assistant
         </h3>
+        <Button 
+          variant="ghost" 
+          size="sm"
+          onClick={clearHistory}
+          className="text-xs"
+        >
+          Clear History
+        </Button>
       </div>
       
       <ScrollArea className="flex-1 p-4" ref={scrollRef}>

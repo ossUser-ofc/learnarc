@@ -50,6 +50,14 @@ serve(async (req) => {
       .order('created_at', { ascending: false })
       .limit(10);
 
+    // Get recent notes for context
+    const { data: notes } = await supabase
+      .from('notes')
+      .select('title, content, tags, folder, created_at')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(10);
+
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
       throw new Error('LOVABLE_API_KEY not configured');
@@ -77,14 +85,25 @@ serve(async (req) => {
       });
     }
 
+    if (notes && notes.length > 0) {
+      systemPrompt += `\n\nRecent notes:`;
+      notes.forEach(note => {
+        const preview = note.content.substring(0, 100);
+        systemPrompt += `\n- ${note.title} (${note.folder}${note.tags?.length ? ', tags: ' + note.tags.join(', ') : ''})`;
+        if (preview) systemPrompt += `: ${preview}...`;
+      });
+    }
+
     systemPrompt += `\n\nProvide helpful, encouraging advice about study habits, task management, and academic success. You can:
-- Suggest new tasks or study activities
+- Suggest new tasks or study activities based on their current workload
 - Give advice on time management and prioritization
 - Provide study techniques and learning strategies
-- Offer motivation and support
-- Answer questions about their academic journey
+- Help organize and categorize their notes
+- Offer insights based on their notes and study patterns
+- Provide motivation and support
+- Answer questions about their academic journey and specific subjects
 
-Keep responses concise, actionable, and supportive.`;
+Keep responses concise, actionable, and supportive. Reference their actual tasks and notes when relevant.`;
 
     // Build messages array
     const messages = [
