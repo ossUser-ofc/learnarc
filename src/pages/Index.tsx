@@ -13,6 +13,7 @@ import { KanbanView } from '@/components/KanbanView';
 import { WeeklySummary } from '@/components/WeeklySummary';
 import { TopicAnalysisPanel } from '@/components/TopicAnalysisPanel';
 import { DataExport } from '@/components/DataExport';
+import { AIChat } from '@/components/AIChat';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -52,7 +53,7 @@ const Index = () => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        navigate('/auth');
+        navigate('/');
         return;
       }
       
@@ -76,7 +77,7 @@ const Index = () => {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (!session) {
-        navigate('/auth');
+        navigate('/');
       }
     });
 
@@ -205,7 +206,7 @@ const Index = () => {
         <header className="mb-8 flex items-center justify-between flex-wrap gap-4">
           <div>
             <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Homework & Revision Tracker
+              learnarc
             </h1>
             <p className="text-muted-foreground">
               {userName && `Hi ${userName}! `}Track your progress and stay organized
@@ -234,7 +235,7 @@ const Index = () => {
               size="sm"
               onClick={async () => {
                 await supabase.auth.signOut();
-                navigate('/auth');
+                navigate('/');
                 toast.success('Signed out successfully');
               }}
             >
@@ -377,6 +378,7 @@ const Index = () => {
               <WeeklySummary tasks={tasks} />
               <TopicAnalysisPanel />
             </div>
+            <AIChat />
             <ProgressChart tasks={tasks} />
             <DataExport tasks={tasks} onImport={async (importedTasks) => {
               // Import tasks to database

@@ -1,1 +1,13 @@
 project_id = "xhuxrujncqvkvxwewwxw"
+
+[functions.analyze-task]
+verify_jwt = true
+
+[functions.analyze-notes-by-topic]
+verify_jwt = true
+
+[functions.generate-weekly-summary]
+verify_jwt = true
+
+[functions.chat-assistant]
+verify_jwt = true

@@ -35,7 +35,7 @@ export default function Auth() {
     // Check if user is already logged in
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate('/');
+        navigate('/app');
       }
       setLoading(false);
     });
@@ -45,7 +45,7 @@ export default function Auth() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
-        navigate('/');
+        navigate('/app');
       }
     });
 
@@ -60,7 +60,7 @@ export default function Auth() {
           email: values.email,
           password: values.password,
           options: {
-            emailRedirectTo: `${window.location.origin}/`,
+            emailRedirectTo: `${window.location.origin}/app`,
           },
         });
         if (error) throw error;
@@ -99,7 +99,7 @@ export default function Auth() {
           </div>
           <h1 className="text-3xl font-bold">{isSignUp ? 'Create Account' : 'Welcome Back'}</h1>
           <p className="text-muted-foreground">
-            {isSignUp ? 'Sign up to start tracking your homework' : 'Sign in to access your homework tracker'}
+            {isSignUp ? 'Sign up to start using learnarc' : 'Sign in to continue with learnarc'}
           </p>
         </div>
 
