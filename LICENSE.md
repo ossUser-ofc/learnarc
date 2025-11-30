@@ -1,16 +1,12 @@
 [![Please Star](https://img.shields.io/badge/⭐️_Star_this_repo!-FFD700)](https://github.com/ossUser-ofc/learnarc/stargazers)
 # Modified MIT License (Non-Commercial)
-<p align="center">
-  <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white">
-  <img src="https://img.shields.io/badge/Open%20Source-2EC866?logo=github&logoColor=white">
-  <img src="https://img.shields.io/badge/ossUser-0078D4">
-  <img src="https://img.shields.io/badge/cubedisk-7B3FE4">
-  <img src="https://img.shields.io/badge/randomguy-E2462B">
-  <img src="https://img.shields.io/badge/Powered%20by%20AI-9B5DE5?logo=openai&logoColor=white">
-  <img src="https://img.shields.io/badge/Claude-886CE4?logo=anthropic&logoColor=white">
-</p>
+[![Built with Lovable](https://img.shields.io/badge/Built_with-Lovable-6366f1?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMiA3TDEyIDEyTDIyIDdMMTIgMloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0yIDEyTDEyIDE3TDIyIDEyIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPHBhdGggZD0iTTIgMTdMMTIgMjJMMjIgMTciIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPgo8L3N2Zz4K)](https://lovable.dev)
+[![GitHub User](https://img.shields.io/badge/ossUser-0078D4?style=flat&logo=github&logoColor=white)](https://github.com/ossUser-Swift)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-Copyright (c) 2025 `ossUser` , `cubedisk` & `randomguy`
+Copyright (c) 2025 `ossUser` , 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the “Software”), to use,
 copy, modify, merge, publish, and distribute copies of the Software **for
