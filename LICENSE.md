@@ -1,32 +1,32 @@
-# Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+[![Please Star](https://img.shields.io/badge/⭐️_Star_this_repo!-FFD700)](https://github.com/ossUser-ofc/learnarc/stargazers)
+# Modified MIT License (Non-Commercial)
+<p align="center">
+  <img src="https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white">
+  <img src="https://img.shields.io/badge/Open%20Source-2EC866?logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/ossUser-0078D4">
+  <img src="https://img.shields.io/badge/cubedisk-7B3FE4">
+  <img src="https://img.shields.io/badge/randomguy-E2462B">
+  <img src="https://img.shields.io/badge/Powered%20by%20AI-9B5DE5?logo=openai&logoColor=white">
+  <img src="https://img.shields.io/badge/Claude-886CE4?logo=anthropic&logoColor=white">
+</p>
 
-Copyright (c) 2025 Study Progress Hub Contributors
+Copyright (c) 2025 `ossUser` , `cubedisk` & `randomguy`
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to use,
+copy, modify, merge, publish, and distribute copies of the Software **for
+non-commercial purposes only**, subject to the following conditions:
 
-This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+1. The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
 
-## You are free to:
+2. The Software, or any derivative works, may **not** be sold, sublicensed,
+   or otherwise used for commercial purposes without explicit written permission
+   from the copyright holder.
 
-- **Share** — copy and redistribute the material in any medium or format
-- **Adapt** — remix, transform, and build upon the material
-
-The licensor cannot revoke these freedoms as long as you follow the license terms.
-
-## Under the following terms:
-
-- **Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-
-- **NonCommercial** — You may not use the material for commercial purposes.
-
-- **ShareAlike** — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
-
-- **No additional restrictions** — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
-
-## Notices:
-
-You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.
-
-No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.
-
----
-
-For the full legal text, visit: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
